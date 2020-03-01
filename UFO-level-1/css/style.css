@@ -1,0 +1,22 @@
+body {
+  background-color: darkgray;
+}
+
+.jumbotron {
+  background: #000000 url("https://www.history.com/.image/ar_16:9%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_768/MTYzNjIxNDQzMjA3MTc3NjQz/ufo-sightings-feature-1125685802.jpg") no-repeat bottom left;
+  background-size: 100% 100%;
+  /* overflow: auto; */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 5px;
+  text-align: center;
+}
+
+h2 {
+  color: white
+}
+
+.col-md-3 {
+  padding-top: 25px;
+}
