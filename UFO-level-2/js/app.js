@@ -14,9 +14,13 @@ tableData.forEach((date) => {
     });
 });
 
-// Select the input element and get the raw HTML node
-// Get the value property of the input element
-var inputField = d3.select("#sights-form-input");
+// Selects the input element and gets the raw HTML node
+var inputFieldDate = d3.select("#sights-form-input-date");
+var inputFieldCity = d3.select("#sights-form-input-city");
+var inputFieldState = d3.select("#sights-form-input-state");
+var inputFieldCountry = d3.select("#sights-form-input-country");
+var inputFieldShape = d3.select("#sights-form-input-shape");
+
 
 function reloadTable() {
 
@@ -25,14 +29,43 @@ function reloadTable() {
 
     // filters the data set with the input date
     var filteredTable = tableData.filter((occurence) => {
-    return occurence.datetime === inputField.property("value");
+        var dateInput = inputFieldDate.property("value");
+        var cityInput = inputFieldCity.property("value");
+        var stateInput = inputFieldState.property("value");
+        var countryInput = inputFieldCountry.property("value");
+        var shapeInput = inputFieldShape.property("value");
+
+        var filters = [ {input: "datetime", value: dateInput},
+            {input: "city", value: cityInput},
+            {input: "state", value: stateInput},
+            {input: "country", value: countryInput},
+            {input: "shape", value: shapeInput}
+        ];
+
+        var filterReturn = [];
+        
+        filters.map ((filter) => {
+            if (filter.value !== "") {
+                return filterReturn.push(`occurence.${filter.input} === "${filter.value}"`);
+            }
+        }
+        );
+
+        var finalFilter = filterReturn.join(" && ");
+
+        console.log(finalFilter);
+
+    return eval(finalFilter); 
+
     });
 
+    console.log(filteredTable);
+
     // appends the table with filtered data
-    filteredTable.forEach((date) => {
+    filteredTable.forEach((x) => {
         var location = d3.select("tbody");
         var row = location.append("tr");
-        Object.entries(date).forEach(([key, value]) => {
+        Object.entries(x).forEach(([key, value]) => {
             var cell = row.append("td");
             cell.text(value); 
         });
@@ -44,14 +77,14 @@ function reloadTable() {
 // on click
 button.on("click", reloadTable);
 
-// on pressing enter
-// (big shout on Heain for helping me finding the solution for clicking enter)
-inputField.on("keydown", function() { 
-    if (event.key === "Enter") {
-        event.preventDefault();
-        reloadTable();
-    }
-});
+// // on pressing enter
+// // (big shout on Heain for helping me finding the solution for clicking enter)
+// inputFieldDate.on("keydown", function() { 
+//     if (event.key === "Enter") {
+//         event.preventDefault();
+//         reloadTable();
+//     }
+// });
 
-// on clicking anywhere else on the page
-inputField.on("change", reloadTable);
+// // on clicking anywhere else on the page
+// inputFieldDate.on("change", reloadTable);
